@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoIPTrace Dashboard</title>
+  <link rel="stylesheet" href="../static/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    #log-box {
+      background-color: black;
+      color: lime;
+      height: 200px;
+      overflow-y: scroll;
+      padding: 10px;
+      font-family: monospace;
+    }
+    #geoMap {
+      height: 400px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .alert-card { padding: 10px; margin: 5px; border-radius: 5px; color: white; font-weight: bold; }
+    .alert-high { background-color: red; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <h2>VoIPTrace</h2>
+    <nav>
+      <a href="#"><span>📊</span> Dashboard</a>
+      <a href="#"><span>📡</span> Live Capture</a>
+      <a href="#"><span>📑</span> Logs</a>
+      <a href="#"><span>⚙</span> Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1>Dashboard</h1>
+      <div class="topbar-right">
+        <input type="text" placeholder="Search...">
+        <div class="user">Tushar</div>
+      </div>
+    </header>
+
+    <section class="stats-grid">
+      <div class="card gradient-blue">
+        <h3>Active Calls</h3>
+        <p id="active-calls">0</p>
+      </div>
+      <div class="card gradient-purple">
+        <h3>SIP Packets</h3>
+        <p id="sip-count">0</p>
+      </div>
+      <div class="card gradient-green">
+        <h3>RTP Packets</h3>
+        <p id="rtp-count">0</p>
+      </div>
+      <div class="card gradient-red">
+        <h3>Alerts</h3>
+        <p id="alerts">0</p>
+      </div>
+    </section>
+
+    <section class="charts">
+      <div class="chart-card">
+        <h3>SIP Traffic</h3>
+        <canvas id="sipChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>RTP Traffic</h3>
+        <canvas id="rtpChart"></canvas>
+      </div>
+    </section>
+
+    <section class="active-calls-section">
+      <h2>Active Calls Panel</h2>
+      <table class="active-calls">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>CallID</th>
+            <th>Caller → Callee</th>
+            <th>User Agent</th>
+            <th>Start Time</th>
+            <th>Duration</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="active-calls-body"></tbody>
+      </table>
+    </section>
+
+    <section class="alerts" id="alerts-section"></section>
+
+    <section class="map-container">
+      <div id="geoMap"></div>
+    </section>
+
+    <section class="logs">
+      <h2>Live Logs</h2>
+      <div id="log-box"></div>
+      <button id="export-csv" class="btn">Export CSV</button>
+    </section>
+  </main>
+
+  <script src="../static/js/app.js"></script>
+</body>
+</html>
