@@ -1,0 +1,28 @@
+# Flask for backend server and API
+Flask==2.3.6
+
+# Scapy for packet capture and PCAP parsing
+scapy==2.7.9
+
+# For working with SQLite (built-in in Python, no need to install)
+
+# Pandas for potential CSV export / data processing
+pandas==2.1.1
+
+# For PDF export (if needed in historical reports)
+reportlab==4.0.5
+
+# For frontend charts (optional Python support, JS handled in template)
+matplotlib==3.8.0
+
+# Requests library (if any external API calls, e.g., geoip or abuseIPDB)
+requests==2.32.0
+
+# GeoIP lookup (MaxMind database)
+geoip2==5.12.0
+
+# For time handling
+python-dateutil==2.9.2
+
+# Optional: flask-cors if frontend is served separately
+flask-cors==3.1.2

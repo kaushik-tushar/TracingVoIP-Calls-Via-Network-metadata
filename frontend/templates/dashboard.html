@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoIPTrace Dashboard</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../static/css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+  <!-- Chart.js & Leaflet -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    /* Live Logs */
+    #log-box {
+      background-color: black;
+      color: lime;
+      height: 200px;
+      overflow-y: scroll;
+      padding: 10px;
+      font-family: monospace;
+    }
+
+    /* GeoMap */
+    #geoMap {
+      height: 400px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    /* Alerts */
+    .alert-card { padding: 10px; margin: 5px; border-radius: 5px; color: white; font-weight: bold; }
+    .alert-high { background-color: red; }
+
+    /* Basic Grid / Cards */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; }
+    .card { padding: 15px; border-radius: 8px; color: white; font-weight: bold; text-align: center; }
+    .gradient-blue { background: linear-gradient(135deg, #1e90ff, #00bfff); }
+    .gradient-purple { background: linear-gradient(135deg, #8a2be2, #ba55d3); }
+    .gradient-green { background: linear-gradient(135deg, #32cd32, #7cfc00); }
+    .gradient-red { background: linear-gradient(135deg, #ff4500, #ff6347); }
+
+    .charts { display: flex; gap: 20px; flex-wrap: wrap; }
+    .chart-card { flex: 1; min-width: 300px; padding: 15px; background: #f9f9f9; border-radius: 8px; }
+
+    table.active-calls { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    table.active-calls th, table.active-calls td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    table.active-calls th { background-color: #4CAF50; color: white; }
+
+    .btn { padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; background-color: #1e90ff; color: white; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>VoIPTrace</h2>
+    <nav>
+      <a href="#"><span>📊</span> Dashboard</a>
+      <a href="#"><span>📡</span> Live Capture</a>
+      <a href="#"><span>📑</span> Logs</a>
+      <a href="#"><span>⚙</span> Settings</a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+    <header class="topbar">
+      <h1>Dashboard</h1>
+      <div class="topbar-right">
+        <input type="text" placeholder="Search...">
+        <div class="user">Tushar</div>
+      </div>
+    </header>
+
+    <!-- Stats Grid -->
+    <section class="stats-grid">
+      <div class="card gradient-blue">
+        <h3>Active Calls</h3>
+        <p id="active-calls">0</p>
+      </div>
+      <div class="card gradient-purple">
+        <h3>SIP Packets</h3>
+        <p id="sip-count">0</p>
+      </div>
+      <div class="card gradient-green">
+        <h3>RTP Packets</h3>
+        <p id="rtp-count">0</p>
+      </div>
+      <div class="card gradient-red">
+        <h3>Alerts</h3>
+        <p id="alerts">0</p>
+      </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="charts">
+      <div class="chart-card">
+        <h3>SIP Traffic</h3>
+        <canvas id="sipChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>RTP Traffic</h3>
+        <canvas id="rtpChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Active Calls</h3>
+        <canvas id="activeChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Alerts</h3>
+        <canvas id="alertChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Active Calls Table -->
+    <section class="active-calls-section">
+      <h2>Active Calls Panel</h2>
+      <table class="active-calls">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>CallID</th>
+            <th>Caller → Callee</th>
+            <th>User Agent</th>
+            <th>Start Time</th>
+            <th>Duration</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="active-calls-body"></tbody>
+      </table>
+    </section>
+
+    <!-- Alerts Panel -->
+    <section class="alerts" id="alerts-section"></section>
+
+    <!-- Geomap -->
+    <section class="map-container">
+      <div id="geoMap"></div>
+    </section>
+
+    <!-- Live Logs -->
+    <section class="logs">
+      <h2>Live Logs</h2>
+      <div id="log-box"></div>
+      <button id="export-csv" class="btn">Export CSV</button>
+    </section>
+  </main>
+
+  <!-- JS -->
+  <script src="../static/js/app.js"></script>
+</body>
+</html>
