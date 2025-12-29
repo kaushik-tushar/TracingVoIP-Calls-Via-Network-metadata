@@ -8,7 +8,7 @@ app = Flask(
     static_folder='../frontend/data/static'
 )
 
-# ---------------- Routes ----------------
+# -------------- Routes ----------------
 @app.route('/')
 def dashboard():
     return render_template('dashboard.html')
@@ -26,3 +26,4 @@ if __name__ == '__main__':
 
     # Run Flask server
     app.run(debug=True, host="0.0.0.0", port=5000)
+
